@@ -26,7 +26,7 @@ export default function ChatMessageView(props: Props) {
       >
         <span
           className={`w-full max-h-[6em] overflow-y-auto`}
-          style={{ overflowWrap: 'anywhere' }}
+          style={{ overflowWrap: 'anywhere', scrollbarWidth: 'thin' }}
         >
           {content}
         </span>

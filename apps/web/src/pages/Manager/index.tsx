@@ -76,7 +76,7 @@ export default function ManagerPage() {
 
   return (
     <>
-      <aside className="relative w-2/5">
+      <aside className="relative w-2/5 overflow-hidden">
         {listLoading && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse">
             <LoadingSpinner />
