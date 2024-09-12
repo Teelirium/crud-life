@@ -9,16 +9,30 @@ type Props = PropsWithChildren<{
 }>;
 
 export default function MessageForm(props: Props) {
+  const formRef = useRef<HTMLFormElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const messageForm = useForm<Data>();
 
+  const { ref, ...rest } = messageForm.register('message', {
+    required: true,
+  });
+
   const sendMessage = messageForm.handleSubmit((data) => {
-    props.onSubmit(data, messageForm);
+    try {
+      props.onSubmit(data, messageForm);
+      textAreaRef.current!.style.height = 'auto';
+      textAreaRef.current!.style.height =
+        textAreaRef.current!.scrollHeight + 'px';
+    } catch (e) {
+      console.error(e);
+    }
   });
 
   return (
     <form
+      ref={formRef}
       onSubmit={sendMessage}
       className="bg-white h-max flex items-end p-1 px-2"
     >
@@ -31,17 +45,18 @@ export default function MessageForm(props: Props) {
           ev.currentTarget.style.height = 'auto';
           ev.currentTarget.style.height = ev.currentTarget.scrollHeight + 'px';
         }}
-        onReset={(ev) => {
-          ev.currentTarget.style.height = 'auto';
-          ev.currentTarget.style.height = ev.currentTarget.scrollHeight + 'px';
-        }}
         onKeyDown={(ev) => {
           if (ev.key === 'Enter' && !ev.shiftKey) {
             ev.preventDefault();
             btnRef.current?.click();
           }
         }}
-        {...messageForm.register('message', { required: true })}
+        {...rest}
+        ref={(e) => {
+          ref(e);
+          //@ts-ignore
+          textAreaRef.current = e;
+        }}
       />
       <button
         ref={btnRef}

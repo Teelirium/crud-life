@@ -62,8 +62,7 @@ export default function ManagerPage() {
 
   const sendMsg: Parameters<typeof ChatBox>[0]['onSend'] = (data, form) => {
     if (!ws) {
-      console.error('Not connected to ws');
-      return;
+      throw new Error('Not connected to ws');
     }
     const msg = {
       author: name,
