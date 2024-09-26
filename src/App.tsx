@@ -1,23 +1,69 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from './components/ui/accordion';
+import { Outlet } from 'react-router-dom';
+import { Accordion } from './components/ui/Accordion';
+import { TaskListItem } from './components/ui/TaskListItem';
+import { Task } from './data/Task/types';
+
+const sampleData: Task[] = [
+  {
+    id: '1',
+    title: 'task 1',
+    content: 'task 1',
+    subtasks: [
+      { id: '1.1', title: 'task 1.1', content: 'task 1.1' },
+      { id: '1.2', title: 'task 1.2', content: 'task 1.2' },
+      { id: '1.3', title: 'task 1.3', content: 'task 1.3' },
+      {
+        id: '1.4',
+        title: 'task 1.4',
+        content: 'task 1.4',
+        subtasks: [
+          { id: '1.4.1', title: 'task 1.4.1', content: 'task 1.4.1' },
+          { id: '1.4.2', title: 'task 1.4.2', content: 'task 1.4.2' },
+          { id: '1.4.3', title: 'task 1.4.3', content: 'task 1.4.3' },
+        ],
+      },
+    ],
+  },
+  {
+    id: '2',
+    title: 'task 2',
+    content: 'task 2',
+    subtasks: [
+      { id: '2.1', title: 'task 2.1', content: 'task 2.1' },
+      { id: '2.2', title: 'task 2.2', content: 'task 2.2' },
+      { id: '2.3', title: 'task 2.3', content: 'task 2.3' },
+      {
+        id: '2.4',
+        title: 'task 2.4',
+        content: 'task 2.4',
+        subtasks: [
+          { id: '2.4.1', title: 'task 2.4.1', content: 'task 2.4.1' },
+          { id: '2.4.2', title: 'task 2.4.2', content: 'task 2.4.2' },
+          { id: '2.4.3', title: 'task 2.4.3', content: 'task 2.4.3' },
+        ],
+      },
+    ],
+  },
+];
 
 export function App() {
   return (
-    <div>
-      <Accordion type="multiple">
-        <AccordionItem value="item-1">
-          <AccordionTrigger>item 1</AccordionTrigger>
-          <AccordionContent>test 1</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger>item 2</AccordionTrigger>
-          <AccordionContent>test 2</AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
+    <main className="w-full h-dvh grid grid-cols-2 bg-white dark:bg-black p-2">
+      <div className="p-2">
+        <Accordion type="multiple">
+          {sampleData.map((t) => (
+            <TaskListItem
+              key={t.id}
+              value={t.id}
+              task={t}
+              className="font-semibold"
+            />
+          ))}
+        </Accordion>
+      </div>
+      <div className="p-2 bg-slate-200 dark:bg-slate-600">
+        {<Outlet /> ?? 'asas'}
+      </div>
+    </main>
   );
 }
