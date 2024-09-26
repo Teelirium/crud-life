@@ -37,6 +37,23 @@ class TaskStore {
     makeAutoObservable(this);
   }
 
+  findTask(id: string) {
+    const stack = [...this.tasks];
+    while (stack.length > 0) {
+      const current = stack.pop() as Task;
+
+      if (current.id === id) {
+        return current;
+      }
+
+      if (current.subtasks && current.subtasks.length > 0) {
+        stack.push(...current.subtasks);
+      }
+    }
+
+    throw new Error(`Could not find task id: ${id}`);
+  }
+
   addTask(taskData: TaskFormData, parentId?: string) {
     const newTask = taskFromFormData(taskData);
 
@@ -47,7 +64,7 @@ class TaskStore {
       return;
     }
 
-    const stack: Task[] = [...this.tasks];
+    const stack = [...this.tasks];
     while (stack.length > 0) {
       const current = stack.pop() as Task;
 
@@ -56,13 +73,19 @@ class TaskStore {
           current.subtasks = [];
         }
         current.subtasks.push(newTask);
-        break;
+        return;
       }
 
       if (current.subtasks && current.subtasks.length > 0) {
         stack.push(...current.subtasks);
       }
     }
+
+    throw new Error(
+      `Failed to add task ${JSON.stringify(
+        taskData
+      )} - could not find parent task id: ${parentId}`
+    );
   }
 }
 

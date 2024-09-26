@@ -36,7 +36,7 @@ const AccordionTrigger = React.forwardRef<
       disabled={disabled}
       className={cn(
         'h-full flex items-center justify-center [&[data-state=open]>svg]:rotate-180',
-        'text-slate-400 hover:text-slate-800 transition-colors',
+        'text-slate-300 hover:text-slate-800 transition-colors',
         disabled ? 'opacity-0' : ''
       )}
     >

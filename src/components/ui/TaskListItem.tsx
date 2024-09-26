@@ -14,23 +14,17 @@ export const TaskListItem: React.FC<TaskListItemProps> = observer(
     const hasSubtasks = task.subtasks !== undefined && task.subtasks.length > 0;
     return (
       <AccordionItem {...props}>
-        <AccordionTrigger
-          disabled={!hasSubtasks}
-          onClick={() => {
-            console.log(task);
-            taskStore.addTask(
-              { title: task.title, content: task.content },
-              props.parent
-            );
-          }}
-        >
+        <AccordionTrigger disabled={!hasSubtasks}>
           <Link to={`/${task.id}`} className="h-full flex-1 flex items-center">
             {task.title}
           </Link>
           <button
             onClick={(ev) => {
               ev.stopPropagation();
-              console.log('btn');
+              taskStore.addTask(
+                { title: task.title, content: task.content },
+                props.parent
+              );
             }}
           >
             test
