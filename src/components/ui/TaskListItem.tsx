@@ -1,20 +1,26 @@
 import { taskStore } from '@/data/Task/stores/Tasks.store';
 import { Task } from '@/data/Task/types';
+import { cn } from '@/lib/utils';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from './Accordion';
 
 type TaskListItemProps = React.ComponentProps<typeof AccordionItem> & {
   task: Task;
+  checkIfCurrent?: (id: string) => boolean;
   parent?: string;
 };
 
 export const TaskListItem: React.FC<TaskListItemProps> = observer(
-  ({ task, ...props }) => {
+  ({ task, checkIfCurrent, ...props }) => {
     const hasSubtasks = task.subtasks !== undefined && task.subtasks.length > 0;
+    const current = checkIfCurrent ? checkIfCurrent(task.id) : false;
     return (
       <AccordionItem {...props}>
-        <AccordionTrigger disabled={!hasSubtasks}>
+        <AccordionTrigger
+          disabled={!hasSubtasks}
+          className={cn(current ? 'bg-blue-100 hover:bg-blue-200' : '')}
+        >
           <Link to={`/${task.id}`} className="h-full flex-1 flex items-center">
             {task.title}
           </Link>
@@ -38,6 +44,7 @@ export const TaskListItem: React.FC<TaskListItemProps> = observer(
                 value={sub.id}
                 task={sub}
                 parent={task.id}
+                checkIfCurrent={checkIfCurrent}
                 className="font-normal"
               />
             ))}

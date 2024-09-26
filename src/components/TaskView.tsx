@@ -10,5 +10,10 @@ export const TaskView = observer(() => {
   }
 
   const task = taskStore.findTask(taskId);
-  return task.content;
+  return (
+    <>
+      <h1 className="font-bold text-xl">{task.title}</h1>
+      <p className="flex-1 overflow-y-auto">{task.content}</p>
+    </>
+  );
 });
