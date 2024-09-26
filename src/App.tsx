@@ -1,6 +1,8 @@
+import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
 import { Accordion } from './components/ui/Accordion';
 import { TaskListItem } from './components/ui/TaskListItem';
+import { taskStore } from './data/Task/stores/Tasks.store';
 import { Task } from './data/Task/types';
 
 const sampleData: Task[] = [
@@ -46,12 +48,12 @@ const sampleData: Task[] = [
   },
 ];
 
-export function App() {
+export const App = observer(() => {
   return (
     <main className="w-full h-dvh grid grid-cols-2 bg-white dark:bg-black p-2">
       <div className="p-2">
         <Accordion type="multiple">
-          {sampleData.map((t) => (
+          {taskStore.tasks.map((t) => (
             <TaskListItem
               key={t.id}
               value={t.id}
@@ -62,8 +64,8 @@ export function App() {
         </Accordion>
       </div>
       <div className="p-2 bg-slate-200 dark:bg-slate-600">
-        {<Outlet /> ?? 'asas'}
+        <Outlet />
       </div>
     </main>
   );
-}
+});

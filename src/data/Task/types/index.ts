@@ -4,3 +4,8 @@ export type Task = {
   content: string;
   subtasks?: Task[];
 };
+
+export type TaskFormData = {
+  title: string;
+  content: string;
+};
