@@ -2,10 +2,12 @@ export type Task = {
   id: string;
   title: string;
   content: string;
-  subtasks?: Task[];
+  // subtasks?: Task[];
 };
 
 export type TaskFormData = {
   title: string;
   content: string;
 };
+
+export type ID = string;

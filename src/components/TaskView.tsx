@@ -9,7 +9,12 @@ export const TaskView = observer(() => {
     throw new Error(`Invalid task id: ${taskId}`);
   }
 
-  const task = taskStore.findTask(taskId);
+  const task = taskStore.tasks.get(taskId);
+
+  if (!task) {
+    throw new Error(`Task not found, id: ${taskId}`);
+  }
+
   return (
     <>
       <h1 className="font-bold text-xl">{task.title}</h1>

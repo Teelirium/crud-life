@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from './Accordion';
+import { Checkbox } from './Checkbox';
 
 type TaskListItemProps = React.ComponentProps<typeof AccordionItem> & {
   task: Task;
@@ -13,12 +14,16 @@ type TaskListItemProps = React.ComponentProps<typeof AccordionItem> & {
 
 export const TaskListItem: React.FC<TaskListItemProps> = observer(
   ({ task, checkIfCurrent, ...props }) => {
-    const hasSubtasks = task.subtasks !== undefined && task.subtasks.length > 0;
+    // const hasSubtasks = task.subtasks !== undefined && task.subtasks.length > 0;
+    const children = taskStore.childrenMap.get(task.id);
+    const hasChildren = children !== undefined && children.length > 0;
+
     const current = checkIfCurrent ? checkIfCurrent(task.id) : false;
+
     return (
       <AccordionItem {...props}>
         <AccordionTrigger
-          disabled={!hasSubtasks}
+          disabled={!hasChildren}
           className={cn(current ? 'bg-blue-100 hover:bg-blue-200' : '')}
         >
           <Link to={`/${task.id}`} className="h-full flex-1 flex items-center">
@@ -35,19 +40,32 @@ export const TaskListItem: React.FC<TaskListItemProps> = observer(
           >
             test
           </button>
+          <Checkbox
+            checked={taskStore.selected.has(task.id)}
+            onClick={() => {
+              if (taskStore.selected.has(task.id)) {
+                taskStore.deselectTask(task.id);
+              } else {
+                taskStore.selectTask(task.id);
+              }
+            }}
+          />
         </AccordionTrigger>
-        {hasSubtasks && (
+        {hasChildren && (
           <AccordionContent className="pl-2">
-            {task.subtasks!.map((sub) => (
-              <TaskListItem
-                key={sub.id}
-                value={sub.id}
-                task={sub}
-                parent={task.id}
-                checkIfCurrent={checkIfCurrent}
-                className="font-normal"
-              />
-            ))}
+            {children.map((id) => {
+              const child = taskStore.tasks.get(id)!;
+              return (
+                <TaskListItem
+                  key={child.id}
+                  value={child.id}
+                  task={child}
+                  parent={task.id}
+                  checkIfCurrent={checkIfCurrent}
+                  className="font-normal"
+                />
+              );
+            })}
           </AccordionContent>
         )}
       </AccordionItem>
