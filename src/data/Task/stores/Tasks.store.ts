@@ -114,7 +114,7 @@ class TaskStore {
   }
 
   selectTask(taskId: string) {
-    if (!this.isSelected(taskId)) {
+    if (!this.tasks.has(taskId)) {
       throw new Error(`Could not select task, it does not exist: ${taskId}`);
     }
 
@@ -123,8 +123,7 @@ class TaskStore {
     const children = this.childrenMap.get(taskId);
     if (children && children.length > 0) {
       for (const child of children) {
-        const isChildSelected = this.selected.has(child);
-        if (!isChildSelected) {
+        if (!this.isSelected(child)) {
           this.selectTask(child);
         }
       }
@@ -134,8 +133,8 @@ class TaskStore {
     if (parent) {
       const siblings = this.childrenMap.get(parent)!;
       if (
-        siblings.every((t) => this.selected.has(t)) &&
-        !this.selected.has(parent)
+        siblings.every((t) => this.isSelected(t)) &&
+        !this.isSelected(parent)
       ) {
         this.selectTask(parent);
       }
@@ -151,8 +150,8 @@ class TaskStore {
     if (parent) {
       const siblings = this.childrenMap.get(parent)!;
       if (
-        siblings.every((t) => this.selected.has(t)) &&
-        this.selected.has(parent)
+        siblings.every((t) => this.isSelected(t)) &&
+        this.isSelected(parent)
       ) {
         this.#deselectParents(parent);
       }
@@ -162,8 +161,7 @@ class TaskStore {
     const children = this.childrenMap.get(taskId);
     if (children && children.length > 0) {
       for (const child of children) {
-        const isChildSelected = this.selected.has(child);
-        if (isChildSelected) {
+        if (this.isSelected(child)) {
           this.deselectTask(child);
         }
       }
@@ -179,8 +177,8 @@ class TaskStore {
     if (parent) {
       const siblings = this.childrenMap.get(parent)!;
       if (
-        siblings.every((t) => this.selected.has(t)) &&
-        this.selected.has(parent)
+        siblings.every((t) => this.isSelected(t)) &&
+        this.isSelected(parent)
       ) {
         this.#deselectParents(parent);
       }

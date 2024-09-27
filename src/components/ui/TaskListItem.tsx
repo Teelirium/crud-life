@@ -41,9 +41,9 @@ export const TaskListItem: React.FC<TaskListItemProps> = observer(
             test
           </button>
           <Checkbox
-            checked={taskStore.selected.has(task.id)}
+            checked={taskStore.isSelected(task.id)}
             onClick={() => {
-              if (taskStore.selected.has(task.id)) {
+              if (taskStore.isSelected(task.id)) {
                 taskStore.deselectTask(task.id);
               } else {
                 taskStore.selectTask(task.id);
