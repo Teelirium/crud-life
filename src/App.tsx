@@ -69,6 +69,7 @@ export const App = observer(() => {
           >
             <CirclePlus />
           </Button>
+
           <Button
             variant={'secondary'}
             size={'icon'}
@@ -78,6 +79,7 @@ export const App = observer(() => {
           >
             <ListChecks />
           </Button>
+
           <Button
             variant={'secondary'}
             size={'icon'}
@@ -87,6 +89,7 @@ export const App = observer(() => {
           >
             <LayoutList />
           </Button>
+
           <Button
             variant={'secondary'}
             size={'icon'}
@@ -101,7 +104,22 @@ export const App = observer(() => {
           >
             <Dices />
           </Button>
-          <Button variant={'secondary'} size={'icon'}>
+
+          <Button
+            key={'deleteBtn'}
+            variant={taskStore.selected.size > 0 ? 'secondary' : 'ghost'}
+            disabled={taskStore.selected.size === 0}
+            size={'icon'}
+            onClick={() => {
+              const selectedTasks = [...taskStore.selected.values()];
+              for (const task of selectedTasks) {
+                if (taskStore.isSelected(task)) {
+                  taskStore.deleteTask(task);
+                }
+              }
+              taskStore.saveStore();
+            }}
+          >
             <Trash2 />
           </Button>
         </div>

@@ -106,9 +106,42 @@ class TaskStore {
 
     this.parentMap.set(newTask.id, parentId);
 
+    if (this.isSelected(parentId)) {
+      this.deselectTask(parentId);
+    }
+
     console.log(this.tasks);
     this.saveStore();
     return newTask;
+  }
+
+  deleteTask(taskId: string) {
+    if (!this.tasks.has(taskId)) {
+      return;
+    }
+
+    this.deselectTask(taskId);
+    this.tasks.delete(taskId);
+
+    const parent = this.parentMap.get(taskId);
+    if (parent) {
+      const siblings = this.childrenMap.get(parent)!;
+      this.childrenMap.set(
+        parent,
+        siblings.filter((s) => s !== taskId)
+      );
+    }
+    this.parentMap.delete(taskId);
+
+    const children = this.childrenMap.get(taskId);
+    if (!children) {
+      return;
+    }
+
+    for (const child of children) {
+      this.deleteTask(child);
+    }
+    this.childrenMap.delete(taskId);
   }
 
   isSelected(taskId: string) {
@@ -173,7 +206,11 @@ class TaskStore {
     this.selected.delete(taskId);
 
     const children = this.childrenMap.get(taskId);
-    if (children && children.length > 0) {
+    if (
+      children &&
+      children.length > 0 &&
+      children.every((c) => this.isSelected(c))
+    ) {
       for (const child of children) {
         if (this.isSelected(child)) {
           this.deselectTask(child);
