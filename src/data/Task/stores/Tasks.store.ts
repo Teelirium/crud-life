@@ -86,6 +86,7 @@ class TaskStore {
       this.tasks.set(newTask.id, newTask);
 
       console.log(this.tasks);
+      this.saveStore();
       return newTask;
     }
 
@@ -106,11 +107,24 @@ class TaskStore {
     this.parentMap.set(newTask.id, parentId);
 
     console.log(this.tasks);
+    this.saveStore();
     return newTask;
   }
 
   isSelected(taskId: string) {
     return this.selected.has(taskId);
+  }
+
+  selectAll() {
+    for (const id of this.tasks.keys()) {
+      this.selected.add(id);
+    }
+  }
+
+  deselectAll() {
+    for (const id of this.tasks.keys()) {
+      this.selected.delete(id);
+    }
   }
 
   selectTask(taskId: string) {
@@ -211,75 +225,4 @@ class TaskStore {
 }
 
 const taskStore = new TaskStore();
-
-const sampleTasks = [
-  {
-    id: '1',
-    title: 'task 1',
-    content: 'task 1...',
-  },
-  { id: '1.1', title: 'task 1.1', content: 'task 1.1...' },
-  {
-    id: '1.2',
-    title: 'task 1.2',
-    content: `task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...
-      task 1.2...task 1.2...task 1.2...`,
-  },
-  { id: '1.3', title: 'task 1.3', content: 'task 1.3...' },
-  {
-    id: '1.4',
-    title: 'task 1.4',
-    content: 'task 1.4...',
-  },
-  { id: '1.4.1', title: 'task 1.4.1', content: 'task 1.4.1...' },
-  { id: '1.4.2', title: 'task 1.4.2', content: 'task 1.4.2...' },
-  { id: '1.4.3', title: 'task 1.4.3', content: 'task 1.4.3...' },
-];
-const sampleChildren: [ID, ID[]][] = [
-  ['1', ['1.1', '1.2', '1.3', '1.4']],
-  ['1.4', ['1.4.1', '1.4.2', '1.4.3']],
-];
-const sampleParents: [ID, ID][] = [
-  ['1.1', '1'],
-  ['1.2', '1'],
-  ['1.3', '1'],
-  ['1.4', '1'],
-  ['1.4.1', '1.4'],
-  ['1.4.2', '1.4'],
-  ['1.4.3', '1.4'],
-];
-taskStore.tasks = new Map(sampleTasks.map((t) => [t.id, t]));
-taskStore.childrenMap = new Map(sampleChildren);
-taskStore.parentMap = new Map(sampleParents);
-
 export { taskStore };

@@ -1,4 +1,11 @@
-import { CirclePlus, Dices, ListChecks, Trash2 } from 'lucide-react';
+import {
+  CirclePlus,
+  Dices,
+  LayoutList,
+  ListChecks,
+  Trash2,
+} from 'lucide-react';
+import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
@@ -8,6 +15,11 @@ import {
   TaskListItem,
   TaskListItemContextProvider,
 } from './components/ui/TaskListItem';
+import {
+  sampleChildren,
+  sampleParents,
+  sampleTasks,
+} from './data/Task/stores/sampleTaskData';
 import { taskStore } from './data/Task/stores/Tasks.store';
 import { ID } from './data/Task/types';
 
@@ -37,7 +49,7 @@ export const App = observer(() => {
   );
 
   useEffect(() => {
-    // taskStore.loadStore();
+    taskStore.loadStore();
   }, []);
 
   return (
@@ -57,10 +69,36 @@ export const App = observer(() => {
           >
             <CirclePlus />
           </Button>
-          <Button variant={'secondary'} size={'icon'}>
+          <Button
+            variant={'secondary'}
+            size={'icon'}
+            onClick={() => {
+              taskStore.selectAll();
+            }}
+          >
             <ListChecks />
           </Button>
-          <Button variant={'secondary'} size={'icon'}>
+          <Button
+            variant={'secondary'}
+            size={'icon'}
+            onClick={() => {
+              taskStore.deselectAll();
+            }}
+          >
+            <LayoutList />
+          </Button>
+          <Button
+            variant={'secondary'}
+            size={'icon'}
+            onClick={() => {
+              runInAction(() => {
+                taskStore.tasks = new Map(sampleTasks);
+                taskStore.childrenMap = new Map(sampleChildren);
+                taskStore.parentMap = new Map(sampleParents);
+                taskStore.saveStore();
+              });
+            }}
+          >
             <Dices />
           </Button>
           <Button variant={'secondary'} size={'icon'}>
