@@ -86,7 +86,7 @@ class TaskStore {
       this.tasks.set(newTask.id, newTask);
 
       console.log(this.tasks);
-      return;
+      return newTask;
     }
 
     if (!this.tasks.has(parentId)) {
@@ -184,6 +184,29 @@ class TaskStore {
       }
     }
     this.selected.delete(taskId);
+  }
+
+  saveStore() {
+    localStorage.setItem('tasks', JSON.stringify([...this.tasks.entries()]));
+    localStorage.setItem(
+      'children',
+      JSON.stringify([...this.childrenMap.entries()])
+    );
+    localStorage.setItem(
+      'parents',
+      JSON.stringify([...this.parentMap.entries()])
+    );
+  }
+
+  loadStore() {
+    const tasks = localStorage.getItem('tasks');
+    this.tasks = tasks ? new Map(JSON.parse(tasks)) : new Map();
+
+    const children = localStorage.getItem('children');
+    this.childrenMap = children ? new Map(JSON.parse(children)) : new Map();
+
+    const parents = localStorage.getItem('parents');
+    this.parentMap = parents ? new Map(JSON.parse(parents)) : new Map();
   }
 }
 

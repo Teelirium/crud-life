@@ -1,6 +1,6 @@
 import { taskStore } from '@/data/Task/stores/Tasks.store';
 import { observer } from 'mobx-react-lite';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 export const TaskView = observer(() => {
   const { taskId } = useParams();
@@ -12,7 +12,8 @@ export const TaskView = observer(() => {
   const task = taskStore.tasks.get(taskId);
 
   if (!task) {
-    throw new Error(`Task not found, id: ${taskId}`);
+    console.error(`Task not found, id: ${taskId}`);
+    return <Navigate to={'/'} replace />;
   }
 
   return (
