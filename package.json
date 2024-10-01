@@ -8,7 +8,7 @@
     "build": "nx build",
     "test": "nx test",
     "predeploy": "pnpm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist/app"
   },
   "private": true,
   "dependencies": {
