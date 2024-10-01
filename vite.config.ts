@@ -26,6 +26,7 @@ export default defineConfig({
   },
 
   plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
+  base: '/crud-life/',
 
   // Uncomment this if you are using workers.
   // worker: {

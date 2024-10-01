@@ -2,10 +2,13 @@
   "name": "@app/source",
   "version": "0.0.0",
   "license": "MIT",
+  "homepage": "https://teelirium.github.io/crud-life",
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "predeploy": "pnpm run build",
+    "deploy": "gh-pages -d dist/app"
   },
   "private": true,
   "dependencies": {
@@ -58,6 +61,7 @@
     "eslint-plugin-playwright": "^1.6.2",
     "eslint-plugin-react": "7.35.0",
     "eslint-plugin-react-hooks": "4.6.0",
+    "gh-pages": "^6.1.1",
     "jsdom": "~22.1.0",
     "nx": "19.8.0",
     "postcss": "8.4.38",
