@@ -6,13 +6,16 @@ import { App } from './App';
 import { TaskView } from './components/TaskView';
 import { ThemeProvider } from './components/ThemeProvider';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [{ path: ':taskId', element: <TaskView /> }],
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <App />,
+      children: [{ path: '/:taskId', element: <TaskView /> }],
+    },
+  ],
+  { basename: '/crud-life/' }
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
