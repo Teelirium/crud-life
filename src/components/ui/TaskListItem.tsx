@@ -40,7 +40,10 @@ export const TaskListItem: React.FC<TaskListItemProps> = observer(
           disabled={!hasChildren}
           className={cn(current ? 'bg-blue-100 hover:bg-blue-200' : '', 'flex')}
         >
-          <Link to={`/${task.id}`} className="h-full flex-1 flex items-center">
+          <Link
+            to={`/${task.id}`}
+            className="h-full flex-1 flex items-center overflow-hidden text-ellipsis whitespace-nowrap"
+          >
             {task.title}
           </Link>
           <div className="flex items-center p-2 gap-4">

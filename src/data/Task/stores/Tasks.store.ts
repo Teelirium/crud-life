@@ -115,6 +115,20 @@ class TaskStore {
     return newTask;
   }
 
+  editTask(taskId: string, newData: TaskFormData) {
+    const task = taskStore.tasks.get(taskId);
+
+    if (!task) {
+      throw new Error(`Could not edit task, it does not exist: ${taskId}`);
+    }
+
+    task.content = newData.content;
+    task.title = newData.title;
+
+    taskStore.tasks.set(taskId, task);
+    this.saveStore();
+  }
+
   deleteTask(taskId: string) {
     if (!this.tasks.has(taskId)) {
       return;
