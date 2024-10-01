@@ -49,11 +49,11 @@ export const TaskView = observer(() => {
     <form className="h-full flex flex-col gap-2" onSubmit={onSubmit}>
       <Input
         type="text"
-        className="bg-transparent resize-none text-xl font-bold h-12"
+        className="bg-transparent dark:bg-transparent border-none resize-none text-xl font-bold h-12"
         {...form.register('title')}
       />
       <TextArea
-        className="bg-transparent resize-none flex-1"
+        className="bg-transparent dark:bg-transparent border-none resize-none flex-1"
         placeholder="..."
         {...form.register('content')}
       />

@@ -18,11 +18,12 @@ export const TaskListItemContextProvider = TaskListItemContext.Provider;
 
 type TaskListItemProps = React.ComponentProps<typeof AccordionItem> & {
   task: Task;
+  level?: number;
   parent?: string;
 };
 
 export const TaskListItem: React.FC<TaskListItemProps> = observer(
-  ({ task, ...props }) => {
+  ({ task, className, level = 0, ...props }) => {
     const { checkIfCurrent, openAccordionItem } =
       useContext(TaskListItemContext);
 
@@ -38,7 +39,13 @@ export const TaskListItem: React.FC<TaskListItemProps> = observer(
       <AccordionItem {...props}>
         <AccordionTrigger
           disabled={!hasChildren}
-          className={cn(current ? 'bg-blue-100 hover:bg-blue-200' : '', 'flex')}
+          className={cn(
+            current
+              ? 'bg-blue-100 dark:bg-blue-800 hover:bg-blue-200 dark:hover:bg-blue-600'
+              : '',
+            'flex ',
+            className
+          )}
         >
           <Link
             to={`/${task.id}`}
@@ -46,6 +53,7 @@ export const TaskListItem: React.FC<TaskListItemProps> = observer(
           >
             {task.title}
           </Link>
+
           <div className="flex items-center p-2 gap-4">
             <Checkbox
               checked={taskStore.isSelected(task.id)}
@@ -78,6 +86,7 @@ export const TaskListItem: React.FC<TaskListItemProps> = observer(
             </Button>
           </div>
         </AccordionTrigger>
+
         {hasChildren && (
           <AccordionContent className="pl-2">
             {children.map((id) => {
@@ -88,7 +97,8 @@ export const TaskListItem: React.FC<TaskListItemProps> = observer(
                   value={child.id}
                   task={child}
                   parent={task.id}
-                  className="font-normal"
+                  level={level + 1}
+                  className={`font-normal`}
                 />
               );
             })}

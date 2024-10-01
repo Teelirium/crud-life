@@ -50,7 +50,7 @@ describe('taskStore', () => {
       expect(taskStore.tasks.has('task1.2')).toBe(false);
 
       expect(taskStore.parentMap.has('task1.2')).toBe(false);
-      expect(taskStore.childrenMap.get('task1')!).not.to.contain('task1.2');
+      expect(taskStore.childrenMap.get('task1')).not.to.contain('task1.2');
     });
 
     test('should delete all children of a deleted task', () => {

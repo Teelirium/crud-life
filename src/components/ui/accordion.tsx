@@ -25,7 +25,9 @@ const AccordionTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       'flex flex-1 p-0 h-12 items-center justify-start transition-all',
-      'hover:bg-slate-100 active:bg-blue-300 [&[data-state=open]>svg]:rotate-180',
+      'text-slate-900 dark:text-slate-50',
+      'hover:bg-slate-200 hover:dark:bg-slate-600 active:bg-blue-300 active:dark:bg-blue-900',
+      '[&[data-state=open]>svg]:rotate-180',
       className
     )}
   >
@@ -33,7 +35,7 @@ const AccordionTrigger = React.forwardRef<
       disabled={disabled}
       className={cn(
         'h-full flex items-center justify-center [&[data-state=open]>svg]:rotate-180',
-        'text-slate-400 hover:text-slate-900 transition-colors',
+        'text-slate-400 hover:text-slate-900 dark:text-slate-400 hover:dark:text-slate-50 transition-colors',
         disabled ? 'opacity-0' : ''
       )}
     >

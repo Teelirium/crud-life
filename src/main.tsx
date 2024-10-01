@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { App } from './App';
 import { TaskView } from './components/TaskView';
+import { ThemeProvider } from './components/ThemeProvider';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider defaultTheme="dark" storageKey="ui-theme">
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </StrictMode>
 );
